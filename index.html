@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Titanic Survival Predictor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #f8f7f4;
+            --text-primary: #1a1a1a;
+            --accent-muted: #e2e0d9;
+        }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        .serif-font { font-family: 'Playfair Display', serif; }
+        
+        .input-minimal {
+            background: transparent;
+            border-bottom: 1px solid #d1d1d1;
+            transition: border-color 0.3s ease;
+        }
+        .input-minimal:focus {
+            border-bottom-color: var(--text-primary);
+            outline: none;
+        }
+        
+        .card-outline {
+            border: 1px solid var(--accent-muted);
+            background: white;
+        }
+
+        .btn-premium {
+            background: #000;
+            color: #fff;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-premium:hover {
+            background: #333;
+            transform: translateY(-1px);
+        }
+        /* Style for the dynamic result box */
+        #resultBox {
+            transition: all 0.5s ease-in-out;
+            transform: scale(0.95);
+            opacity: 0;
+        }
+        #resultBox.visible {
+            transform: scale(1);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="min-h-screen selection:bg-black selection:text-white">
+    <nav class="p-8 flex justify-between items-center max-w-7xl mx-auto">
+        <div class="text-sm font-bold tracking-widest uppercase">Titanic Analysis</div>
+        <div class="text-xs font-bold border border-black px-4 py-2 rounded-full">1912 UNIT</div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 pt-12 pb-24">
+        <header class="mb-24">
+            <h1 class="serif-font text-6xl md:text-8xl leading-[0.9] tracking-tight mb-8">
+                Optimal analysis <br>
+                <span class="italic">meets historical data</span>
+            </h1>
+            <p class="max-w-lg text-lg text-neutral-600 leading-relaxed">
+                A sophisticated machine learning tool designed to calculate survival probability based on the 1912 Titanic manifest data.
+            </p>
+        </header>
+
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+            <div class="lg:col-span-4">
+                <div class="sticky top-12">
+                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400 block mb-4">The Methodology</span>
+                    <h3 class="serif-font text-3xl mb-6">Structured for precision</h3>
+                    <p class="text-sm text-neutral-500 leading-loose">
+                        Our model evaluates socio-economic status and demographic variables to determine survivability with modern algorithmic accuracy.
+                    </p>
+                </div>
+            </div>
+
+            <div class="lg:col-span-8">
+                <div class="card-outline p-8 md:p-12 rounded-[2rem]">
+                    <form id="predictionForm" class="space-y-12">
+                        <div id="resultBox" class="hidden mb-12 p-10 rounded-3xl text-center border border-black shadow-xl">
+                            <span class="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-500 block mb-4">Final Prediction</span>
+                            <h4 id="predictionText" class="serif-font text-4xl italic"></h4>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                            <div class="flex flex-col gap-2">
+                                <label class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">01. Class of Travel</label>
+                                <select name="pclass" class="input-minimal py-4 text-lg appearance-none cursor-pointer">
+                                    <option value="1">First Class (Premium)</option>
+                                    <option value="2">Second Class (Standard)</option>
+                                    <option value="3">Third Class (Economy)</option>
+                                </select>
+                            </div>
+
+                            <div class="flex flex-col gap-2">
+                                <label class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">02. Passenger Gender</label>
+                                <select name="sex" class="input-minimal py-4 text-lg appearance-none cursor-pointer">
+                                    <option value="1">Female</option>
+                                    <option value="0">Male</option>
+                                </select>
+                            </div>
+
+                            <div class="flex flex-col gap-2">
+                                <label class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">03. Chronological Age</label>
+                                <input type="number" name="age" placeholder="Age" required class="input-minimal py-4 text-lg">
+                            </div>
+
+                            <div class="flex flex-col gap-2">
+                                <label class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">04. Fare Structure (GBP)</label>
+                                <input type="number" step="0.01" name="fare" placeholder="Fare Amount" required class="input-minimal py-4 text-lg">
+                            </div>
+
+                            <div class="flex flex-col gap-2">
+                                <label class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">05. Siblings/Spouse</label>
+                                <input type="number" name="sibsp" placeholder="Count" required class="input-minimal py-4 text-lg">
+                            </div>
+
+                            <div class="flex flex-col gap-2">
+                                <label class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">06. Parents/Children</label>
+                                <input type="number" name="parch" placeholder="Count" required class="input-minimal py-4 text-lg">
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">07. Port of Departure</label>
+                            <select name="embarked" class="input-minimal py-4 text-lg appearance-none cursor-pointer">
+                                <option value="0">Southampton (UK)</option>
+                                <option value="1">Cherbourg (FR)</option>
+                                <option value="2">Queenstown (IRE)</option>
+                            </select>
+                        </div>
+
+                        <div class="pt-8">
+                            <button type="submit" id="submitBtn" class="btn-premium w-full py-6 rounded-full text-sm font-bold uppercase tracking-[0.2em]">
+                                Generate Survival Profile
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const form = document.getElementById('predictionForm');
+        const resultBox = document.getElementById('resultBox');
+        const predictionText = document.getElementById('predictionText');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            
+            // UI Feedback
+            submitBtn.innerText = "Processing Manifest...";
+            submitBtn.disabled = true;
+
+            const formData = new FormData(form);
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+
+                // Show and style result
+                resultBox.classList.remove('hidden');
+                setTimeout(() => resultBox.classList.add('visible'), 10);
+                
+                predictionText.innerText = data.prediction;
+                
+                if (data.prediction.includes("Survived")) {
+                    resultBox.style.backgroundColor = "#ecfdf5"; // Success green
+                    resultBox.style.borderColor = "#10b981";
+                } else {
+                    resultBox.style.backgroundColor = "#fef2f2"; // Error red
+                    resultBox.style.borderColor = "#ef4444";
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            } finally {
+                submitBtn.innerText = "Generate Survival Profile";
+                submitBtn.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html>
